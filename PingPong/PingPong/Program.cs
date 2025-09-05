@@ -32,9 +32,51 @@
             do
             {
                 key = Console.ReadKey(true);
-            }
-            while (key.Key != ConsoleKey.Escape); // по нажатию на Escape завершаем цикл
+
+                switch (key.Key)
+                {
+                    // Левая ракетка
+                    case ConsoleKey.W:
+                        if (program.RocketFirstY > 1) // ограничение сверху
+                        {
+                            program.Buffer.RocketFirstY = program.RocketFirstY;
+                            program.RocketFirstY--;
+                            program.DrawRocket();
+                        }
+                        break;
+
+                    case ConsoleKey.S:
+                        if (program.RocketFirstY < FieldY - 4) // ограничение снизу
+                        {
+                            program.Buffer.RocketFirstY = program.RocketFirstY;
+                            program.RocketFirstY++;
+                            program.DrawRocket();
+                        }
+                        break;
+
+                    // Правая ракетка
+                    case ConsoleKey.O:
+                        if (program.RocketSecondY > 1)
+                        {
+                            program.Buffer.RocketSecondY = program.RocketSecondY;
+                            program.RocketSecondY--;
+                            program.DrawRocket();
+                        }
+                        break;
+
+                    case ConsoleKey.L:
+                        if (program.RocketSecondY < FieldY - 4)
+                        {
+                            program.Buffer.RocketSecondY = program.RocketSecondY;
+                            program.RocketSecondY++;
+                            program.DrawRocket();
+                        }
+                        break;
+                }
+
+            } while (key.Key != ConsoleKey.Escape); // выход по Esc
         }
+
 
         public void FirstDraw()
         {
