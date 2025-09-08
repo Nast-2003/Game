@@ -18,6 +18,8 @@ namespace PingPong
         public int BallDirY { get; set; } = 1; // движение вверх/вниз
         public Buffer Buffer { get; set; }
 
+        private Random rnd = new Random(); // генератор случайных чисел
+
         const int FieldX = 100;
         const int FieldY = 25;
         const int FinalScore = 5;
@@ -31,6 +33,10 @@ namespace PingPong
                 RocketSecondX = FieldX - 2,
                 RocketSecondY = 1
             };
+
+            // Случайное направление мяча в начале игры
+            program.BallDirX = (program.rnd.Next(2) == 0) ? -1 : 1;
+            program.BallDirY = (program.rnd.Next(2) == 0) ? -1 : 1;
 
             program.FirstDraw();
             Task.Run(program.Draw);
@@ -146,18 +152,11 @@ namespace PingPong
                 MoveBall();
                 DrawBall();
 
-                if (FirstScore >= FinalScore)
+                if (FirstScore >= FinalScore || SecondScore >= FinalScore)
                 {
-                    Console.SetCursorPosition(0, FieldY + 3);
-                    Console.WriteLine(" Победил левый игрок!");
-                    break;
+                    break; // игра завершается без сообщения о победе
                 }
-                else if (SecondScore >= FinalScore)
-                {
-                    Console.SetCursorPosition(0, FieldY + 3);
-                    Console.WriteLine(" Победил правый игрок!");
-                    break;
-                }
+
                 Thread.Sleep(100);
             }
         }
@@ -215,8 +214,10 @@ namespace PingPong
         {
             BallX = FieldX / 2;
             BallY = FieldY / 2;
-            BallDirX = (BallDirX == 1 ? -1 : 1); // меняем сторону запуска
-            BallDirY = (BallDirY == 1 ? -1 : 1);
+
+            // случайное направление при каждом новом розыгрыше
+            BallDirX = (rnd.Next(2) == 0) ? -1 : 1;
+            BallDirY = (rnd.Next(2) == 0) ? -1 : 1;
         }
 
         public void DrawBall()
